@@ -6,7 +6,7 @@ openai.api_key = "YOUR_API_KEY_HERE"
 
 # Set up Pyrogram client
 app = pyrogram.Client(
-    "my_bot",
+    "ChatGPTBot",
     api_id=12345,
     api_hash="YOUR_API_HASH_HERE",
     bot_token="YOUR_BOT_TOKEN_HERE"
