@@ -2,14 +2,14 @@ import openai
 import pyrogram
 
 # Set up OpenAI API credentials
-openai.api_key = "YOUR_API_KEY_HERE"
+openai.api_key = "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"
 
 # Set up Pyrogram client
 app = pyrogram.Client(
     "ChatGPTBot",
-    api_id=12345,
-    api_hash="YOUR_API_HASH_HERE",
-    bot_token="YOUR_BOT_TOKEN_HERE"
+    api_id=18862638,
+    api_hash="2a4a8dc0c1f6c9cb65f9f144439558ae",
+    bot_token="6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI"
 )
 
 # Define a function to send messages
