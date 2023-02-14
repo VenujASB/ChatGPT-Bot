@@ -5,14 +5,14 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 # Enter your OpenAI API key here
-openai.api_key = "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"
+openai.api_key = "OPENAI_API_KEY"
 
 # Get your Telegram bot token from environment variables
-bot_token = os.environ.get("6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI")
+bot_token = os.environ.get("BOT_TOKEN")
 
 # Get your Pyrogram API ID and API hash from environment variables
-api_id = 18862638
-api_hash = os.environ.get("2a4a8dc0c1f6c9cb65f9f144439558ae")
+api_id = int(os.environ.get("API_ID"))
+api_hash = os.environ.get("API_HASH")
 
 # Create a new Pyrogram client
 app = Client(
