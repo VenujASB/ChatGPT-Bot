@@ -21,7 +21,7 @@ openai.api_key = os.getenv("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"
 # Initialize the Pyrogram client
 app = pyrogram.Client(
     "my_bot",
-    api_id=os.getenv("18862638"),
+    api_id=os.getenv(18862638),
     api_hash=os.getenv("2a4a8dc0c1f6c9cb65f9f144439558ae"),
     bot_token=os.getenv("6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI")
 )
