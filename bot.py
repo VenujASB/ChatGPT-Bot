@@ -2,7 +2,7 @@ import openai
 import pyrogram
 
 # Set up OpenAI API credentials
-openai.api_key = "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"
+openai.api_key = "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"
 
 # Set up Pyrogram client
 app = pyrogram.Client(
