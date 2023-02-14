@@ -11,7 +11,7 @@ openai.api_key = "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"
 bot_token = os.environ.get("6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI")
 
 # Get your Pyrogram API ID and API hash from environment variables
-api_id = int(os.environ.get("18862638"))
+api_id = 18862638
 api_hash = os.environ.get("2a4a8dc0c1f6c9cb65f9f144439558ae")
 
 # Create a new Pyrogram client
