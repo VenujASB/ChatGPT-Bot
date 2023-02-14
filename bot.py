@@ -10,7 +10,7 @@ logging.basicConfig(
 )
 
 # Load environment variables
-TELEGRAM_API_ID = os.environ[18862638]
+TELEGRAM_API_ID = os.environ['18862638']
 TELEGRAM_API_HASH = os.environ['2a4a8dc0c1f6c9cb65f9f144439558ae']
 TELEGRAM_BOT_TOKEN = os.environ['6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI']
 OPENAI_API_KEY = os.environ['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']
