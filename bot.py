@@ -1,52 +1,45 @@
-import os
-import logging
-import pyrogram
 import openai
+import pyrogram
 
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+# Set up OpenAI API credentials
+openai.api_key = "YOUR_API_KEY_HERE"
+
+# Set up Pyrogram client
+app = pyrogram.Client(
+    "my_bot",
+    api_id=12345,
+    api_hash="YOUR_API_HASH_HERE",
+    bot_token="YOUR_BOT_TOKEN_HERE"
 )
 
-# Load environment variables
-TELEGRAM_API_ID = os.environ['18862638']
-TELEGRAM_API_HASH = os.environ['2a4a8dc0c1f6c9cb65f9f144439558ae']
-TELEGRAM_BOT_TOKEN = os.environ['6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI']
-OPENAI_API_KEY = os.environ['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']
+# Define a function to send messages
+def send_message(chat_id, text):
+    app.send_message(chat_id, text)
 
-# Set up Pyrogram and OpenAI API clients
-app = pyrogram.Client('chatbot', api_id=TELEGRAM_API_ID, api_hash=TELEGRAM_API_HASH, bot_token=TELEGRAM_BOT_TOKEN)
-openai.api_key = OPENAI_API_KEY
+# Define a function to handle the /start command
+@app.on_message(pyrogram.filters.command("start"))
+def start_command(client, message):
+    # Send a welcome message
+    send_message(message.chat.id, "Hi, I'm Chat Bot!")
 
-# Define welcome message and buttons
-WELCOME_MESSAGE = 'Welcome to my chatbot!'
-DEVELOPER_BUTTON = pyrogram.InlineKeyboardButton('Developer', url='https://www.example.com/developer')
-GITHUB_BUTTON = pyrogram.InlineKeyboardButton('GitHub', url='https://github.com/example')
+# Define a function to process incoming messages
+@app.on_message()
+def handle_message(client, message):
+    # Get the message text
+    message_text = message.text.lower()
 
-# Define command handlers
-@app.on_message(pyrogram.filters.command(['start']))
-def start_command_handler(client, message):
-    # Send welcome message and buttons
-    buttons = [DEVELOPER_BUTTON, GITHUB_BUTTON]
-    client.send_message(chat_id=message.chat.id, text=WELCOME_MESSAGE, reply_markup=pyrogram.InlineKeyboardMarkup([buttons]))
-
-@app.on_message(pyrogram.filters.text)
-def text_message_handler(client, message):
-    # Generate response using OpenAI
-    prompt = message.text
+    # Use OpenAI's GPT-3 API to generate a response
     response = openai.Completion.create(
-        engine='davinci',
-        prompt=prompt,
-        max_tokens=1024,
+        engine="davinci",
+        prompt=message_text,
+        max_tokens=100,
         n=1,
         stop=None,
-        temperature=0.5,
+        temperature=0.5
     )
-    text = response.choices[0].text.strip()
-    
-    # Send response message
-    client.send_message(chat_id=message.chat.id, text=text)
 
-# Run the bot
+    # Send the generated response back to the user
+    send_message(message.chat.id, response.choices[0].text)
+
+# Run the Pyrogram client
 app.run()
