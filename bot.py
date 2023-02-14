@@ -1,62 +1,55 @@
 import os
-import logging
-import pyrogram
-from pyrogram import filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import openai
-from dotenv import load_dotenv
+import pyrogram
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-# Load environment variables from .env file
-load_dotenv()
+# Enter your OpenAI API key here
+openai.api_key = "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"
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+# Get your Telegram bot token from environment variables
+bot_token = os.environ.get("6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI")
 
-# Initialize the OpenAI API
-openai.api_key = os.getenv("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")
+# Get your Pyrogram API ID and API hash from environment variables
+api_id = int(os.environ.get("18862638"))
+api_hash = os.environ.get("2a4a8dc0c1f6c9cb65f9f144439558ae")
 
-# Initialize the Pyrogram client
-app = pyrogram.Client(
+# Create a new Pyrogram client
+app = Client(
     "my_bot",
-    api_id=os.getenv(18862638),
-    api_hash=os.getenv("2a4a8dc0c1f6c9cb65f9f144439558ae"),
-    bot_token=os.getenv("6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI")
+    bot_token=bot_token,
+    api_id=api_id,
+    api_hash=api_hash,
 )
 
-# Define the welcome message and buttons
-WELCOME_MESSAGE = "Hello! I'm ChatGPT, a chatbot powered by OpenAI's GPT-3. How can I assist you today?"
-DEVELOPER_BUTTON = InlineKeyboardButton("Developer", url="https://example.com/developer")
-GITHUB_BUTTON = InlineKeyboardButton("GitHub", url="https://github.com/example")
-
-# Define the /start command handler
+# Handle the /start command
 @app.on_message(filters.command("start"))
-def start(bot, update):
-    # Send the welcome message with the buttons
-    keyboard = [[DEVELOPER_BUTTON, GITHUB_BUTTON]]
+def start_command_handler(client, message):
+    # Send a welcome message with buttons
+    keyboard = [
+        [InlineKeyboardButton("Button 1", callback_data="button1")],
+        [InlineKeyboardButton("Button 2", callback_data="button2")],
+        [InlineKeyboardButton("Button 3", callback_data="button3")],
+    ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    bot.send_message(chat_id=update.chat.id, text=WELCOME_MESSAGE, reply_markup=reply_markup)
+    message.reply_text("Welcome to my bot!", reply_markup=reply_markup)
 
-# Define the message handler
+# Handle any message sent to the bot
 @app.on_message(filters.text)
-def message(bot, update):
+def message_handler(client, message):
     # Generate a response using ChatGPT
-    try:
-        response = openai.Completion.create(
-            engine="davinci",
-            prompt=update.text,
-            max_tokens=60,
-            n=1,
-            stop=None,
-            temperature=0.7
-        ).choices[0].text.strip()
-    except Exception as e:
-        response = str(e)
+    prompt = message.text.strip()
+    response = openai.Completion.create(
+        engine="davinci",
+        prompt=prompt,
+        max_tokens=50,
+        n=1,
+        stop=None,
+        temperature=0.7,
+    ).choices[0].text.strip()
 
-    # Send the response
-    bot.send_message(chat_id=update.chat.id, text=response)
+    # Send the response back to the user
+    message.reply_text(response)
 
-# Run the bot
+# Start the bot
 app.run()
