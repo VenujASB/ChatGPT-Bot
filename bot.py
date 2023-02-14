@@ -4,14 +4,14 @@ import pyrogram
 import os
 
 # Set up OpenAI API credentials
-openai.api_key = os.environ.get('OPENAI_API_KEY')
+openai.api_key = os.environ.get('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')
 
 # Set up Pyrogram client
 app = pyrogram.Client(
     "my_bot",
-    api_id=os.environ.get('TELEGRAM_API_ID'),
-    api_hash=os.environ.get('TELEGRAM_API_HASH'),
-    bot_token=os.environ.get('TELEGRAM_BOT_TOKEN')
+    api_id=os.environ.get('18862638'),
+    api_hash=os.environ.get('2a4a8dc0c1f6c9cb65f9f144439558ae'),
+    bot_token=os.environ.get('6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI')
 )
 
 # Define a function to send messages
