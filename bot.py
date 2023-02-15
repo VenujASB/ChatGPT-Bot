@@ -1,17 +1,16 @@
-
 import os
 import openai
 from pyrogram import Client, filters
 
 # Set up OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("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")
 
 # Create a new Pyrogram client instance
 app = Client(
     "my_telegram_bot",
     api_id=os.getenv("API_ID"),
-    api_hash=os.getenv("API_HASH"),
-    bot_token=os.getenv("BOT_TOKEN"),
+    api_hash=os.getenv("2a4a8dc0c1f6c9cb65f9f144439558ae"),
+    bot_token=os.getenv("6172113599:AAGZm96NR0vgzyWy9IFgrHiN6VSfyGXukaI"),
 )
 
 # Define a message handler function
