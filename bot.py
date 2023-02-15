@@ -1,55 +1,43 @@
+
 import os
 import openai
-import pyrogram
 from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-# Enter your OpenAI API key here
-openai.api_key = "OPENAI_API_KEY"
+# Set up OpenAI API key
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Get your Telegram bot token from environment variables
-bot_token = os.environ.get("BOT_TOKEN")
-
-# Get your Pyrogram API ID and API hash from environment variables
-api_id = int(os.environ.get("API_ID"))
-api_hash = os.environ.get("API_HASH")
-
-# Create a new Pyrogram client
+# Create a new Pyrogram client instance
 app = Client(
-    "my_bot",
-    bot_token=bot_token,
-    api_id=api_id,
-    api_hash=api_hash,
+    "my_telegram_bot",
+    api_id=os.getenv("API_ID"),
+    api_hash=os.getenv("API_HASH"),
+    bot_token=os.getenv("BOT_TOKEN"),
 )
 
-# Handle the /start command
-@app.on_message(filters.command("start"))
-def start_command_handler(client, message):
-    # Send a welcome message with buttons
-    keyboard = [
-        [InlineKeyboardButton("Button 1", callback_data="button1")],
-        [InlineKeyboardButton("Button 2", callback_data="button2")],
-        [InlineKeyboardButton("Button 3", callback_data="button3")],
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    message.reply_text("Welcome to my bot!", reply_markup=reply_markup)
+# Define a message handler function
+@ app.on_message(filters.private)
+def handle_message(client, message):
+    # Get the user's message
+    user_message = message.text.lower()
 
-# Handle any message sent to the bot
-@app.on_message(filters.text)
-def message_handler(client, message):
-    # Generate a response using ChatGPT
-    prompt = message.text.strip()
-    response = openai.Completion.create(
-        engine="davinci",
-        prompt=prompt,
-        max_tokens=50,
-        n=1,
-        stop=None,
-        temperature=0.7,
-    ).choices[0].text.strip()
+    # If the user sends "/start", send a welcome message
+    if user_message == "/start":
+        message.reply_text(
+            f"Hi there! I'm a chatbot powered by OpenAI's GPT-3. Just send me a message and I'll respond with something intelligent! 😊"
+        )
+    else:
+        # Generate a response using OpenAI's GPT-3 API
+        response = openai.Completion.create(
+            engine="davinci",
+            prompt=user_message,
+            max_tokens=50,
+            n=1,
+            stop=None,
+            temperature=0.5,
+        )
 
-    # Send the response back to the user
-    message.reply_text(response)
+        # Send the response back to the user
+        message.reply_text(response.choices[0].text)
 
-# Start the bot
+# Start the Pyrogram client
 app.run()
