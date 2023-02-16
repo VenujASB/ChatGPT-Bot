@@ -1,51 +1,43 @@
-import openai
-import os
-from dotenv import load_dotenv
 from pyrogram import Client, filters
 from pyrogram.types import Message
+import openai
+from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
-# Load configuration from environment variables
 API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# Initialize OpenAI GPT model
 openai.api_key = OPENAI_API_KEY
-model_engine = "davinci"  # Choose the model engine
-prompt = "Hi, how can I assist you today?"  # Choose the prompt
 
-# Initialize the Pyrogram client
 app = Client("my_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 
-# Define command handlers
 @app.on_message(filters.command("start"))
-async def start_command_handler(client: Client, message: Message):
-    """Handler for the /start command."""
-    await message.reply_text("Hello, I'm a chatbot powered by OpenAI. How can I help you today?")
+def start_handler(_, message: Message):
+    message.reply_text(
+        "Hello! I am a simple chat bot. You can send me any message, and I will use OpenAI's GPT to generate a response."
+    )
 
 
-# Define message handlers
-@app.on_message(filters.text)
-async def message_handler(client: Client, message: Message):
-    """Handler for incoming messages."""
-    # Generate response using OpenAI GPT model
-    generated_text = openai.Completion.create(
-        engine=model_engine,
-        prompt=prompt + message.text,
-        max_tokens=1024,
-        n=1,
-        stop=None,
-        temperature=0.7,
-    ).choices[0].text
+@app.on_message(~filters.command("start"))
+def message_handler(_, message: Message):
+    # Check if the message is empty
+    if not message.text:
+        return
 
-    # Send the response to the user
-    await message.reply_text(generated_text)
+    # Use the OpenAI GPT to generate a response
+    response = openai.Completion.create(
+        engine="davinci", prompt=message.text, max_tokens=50
+    )
+
+    # Reply with the generated response
+    message.reply_text(response.choices[0].text)
 
 
-# Start the client
-print("Bot is Alive!")
-app.run()
+if __name__ == "__main__":
+    app.run()
+
