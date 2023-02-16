@@ -34,7 +34,7 @@ def message_handler(client, message):
         max_tokens=50,
         n=1,
         stop=None,
-        temperature=0.7,
+        temperature=0.5,
     ).choices[0].text.strip()
 
     # Send the response back to the user
