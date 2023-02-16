@@ -22,22 +22,19 @@ def start_handler(_, message: Message):
         "Hello! I am a simple chat bot. You can send me any message, and I will use OpenAI's GPT to generate a response."
     )
 
+@app.on_message(~filters.command("start"))
+def message_handler(_, message: Message):
+    # Check if the message is empty
+    if not message.text:
+        return
 
-# Handle any message sent to the bot
-@app.on_message(filters.text)
-def message_handler(client, message):
-    # Generate a response using ChatGPT
-    prompt = message.text.strip()
+    # Use the OpenAI GPT to generate a response
     response = openai.Completion.create(
-        engine="davinci",
-        prompt=prompt,
-        max_tokens=50,
-        n=1,
-        temperature=0.5,
-    ).choices[0].text.strip()
+        engine="davinci", prompt=message.text, max_tokens=50
+    )
 
-    # Send the response back to the user
-    message.reply_text(response)
+    # Reply with the generated response
+    message.reply_text(response.choices[0].text)
 
 
 if __name__ == "__main__":
