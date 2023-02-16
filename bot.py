@@ -31,10 +31,10 @@ def message_handler(client, message):
     response = openai.Completion.create(
         engine="davinci",
         prompt=prompt,
-        max_tokens=100,
+        max_tokens=256,
         n=1,
         stop=None,
-        temperature=0.5,
+        temperature=0.9,
     ).choices[0].text.strip()
 
     # Send the response back to the user
