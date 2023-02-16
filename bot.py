@@ -33,7 +33,6 @@ def message_handler(client, message):
         prompt=prompt,
         max_tokens=50,
         n=1,
-        stop=None,
         temperature=0.5,
     ).choices[0].text.strip()
 
