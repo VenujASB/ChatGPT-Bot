@@ -1,12 +1,5 @@
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-# Telegram API configuration
-API_ID = int(os.getenv("API_ID"))
-API_HASH = os.getenv("API_HASH")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-# OpenAI API configuration
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+class Config:
+    API_ID = API_ID  # Replace with your Telegram API ID
+    API_HASH = "API_HASH"  # Replace with your Telegram API hash
+    BOT_TOKEN = "BOT_TOKEN"  # Replace with your Telegram bot token
+    OPENAI_API_KEY = "OPENAI_API_KEY"  # Replace with your OpenAI API key
