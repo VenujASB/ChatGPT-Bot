@@ -31,7 +31,7 @@ def message_handler(_, message: Message):
 
     # Use the OpenAI GPT to generate a response
     response = openai.Completion.create(
-        engine="davinci", prompt=message.text, max_tokens=50
+        engine="davinci", prompt=message.text, max_tokens=100
     )
 
     # Reply with the generated response
