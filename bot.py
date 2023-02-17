@@ -22,6 +22,7 @@ def start_handler(_, message: Message):
         "Hello! I am a simple chat bot. You can send me any message, and I will use OpenAI's GPT to generate a response."
     )
 
+
 @app.on_message(~filters.command("start"))
 def message_handler(_, message: Message):
     # Check if the message is empty
